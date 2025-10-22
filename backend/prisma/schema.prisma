@@ -1,0 +1,118 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+
+model Role {
+  id   String @id @default(cuid())
+  name String @unique
+
+  userRoles UserRole[]
+
+  @@map("roles")
+}
+
+model UserRole {
+  id     String @id @default(cuid())
+  userId String
+  roleId String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@map("user_roles")
+}
+
+model User {
+  id       String @id @default(cuid())
+  email    String @unique
+  password String
+  name     String
+
+  userRoles UserRole[]
+  serviceLogs ServiceLog[]
+
+  @@map("users")
+}
+
+model Customer {
+  id          String @id @default(cuid())
+  name        String
+  phoneNumber String
+
+  vehicles Vehicle[]
+
+  @@map("customers")
+}
+
+model Vehicle {
+  id                String @id @default(cuid())
+  registrationPlate String @unique
+  make              String
+  model             String
+
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  serviceLogs ServiceLog[]
+
+  @@map("vehicles")
+}
+
+model ServiceLog {
+  id        String   @id @default(cuid())
+  date      DateTime @default(now())
+  totalCost Int
+  notes     String?
+
+  userId   String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  vehicleId String
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  serviceItems ServiceItem[]
+
+  @@map("service_logs")
+}
+
+model ServiceItem {
+  id          String @id @default(cuid())
+  description String
+  quantity    Int
+  price       Int
+
+  serviceLogId String
+  serviceLog   ServiceLog @relation(fields: [serviceLogId], references: [id], onDelete: Cascade)
+
+  inventoryItemId String
+  inventoryItem   InventoryItem @relation(fields: [inventoryItemId], references: [id], onDelete: Cascade)
+
+  @@map("service_items")
+}
+
+model InventoryItem {
+  id           String @id @default(cuid())
+  name         String
+  sku          String @unique
+  stock        Int
+  sellingPrice Int
+
+  serviceItems ServiceItem[]
+
+  @@map("inventory_items")
+}
