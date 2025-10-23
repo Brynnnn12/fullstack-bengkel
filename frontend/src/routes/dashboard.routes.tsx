@@ -15,6 +15,24 @@ const CustomerPage = lazy(() =>
   }))
 );
 
+const VehiclePage = lazy(() =>
+  import("../pages/vehicles/VehiclePage").then((module) => ({
+    default: module.VehiclePage,
+  }))
+);
+
+const ServiceLogPage = lazy(() =>
+  import("../pages/serviceLogs/ServiceLogPage").then((module) => ({
+    default: module.ServiceLogPage,
+  }))
+);
+
+const InventoryPage = lazy(() =>
+  import("../pages/inventory/InventoryPage").then((module) => ({
+    default: module.InventoryPage,
+  }))
+);
+
 // Dashboard routes configuration
 export const dashboardRoutes = [
   {
@@ -34,6 +52,30 @@ export const dashboardRoutes = [
         element: (
           <ProtectedRoute>
             <CustomerPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "vehicles",
+        element: (
+          <ProtectedRoute>
+            <VehiclePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "service-logs",
+        element: (
+          <ProtectedRoute>
+            <ServiceLogPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "inventory",
+        element: (
+          <ProtectedRoute>
+            <InventoryPage />
           </ProtectedRoute>
         ),
       },

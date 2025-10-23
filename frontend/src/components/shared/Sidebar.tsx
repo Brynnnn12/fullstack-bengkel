@@ -11,6 +11,7 @@ import {
   ChevronDown,
   Menu,
   X,
+  Car,
 } from "lucide-react";
 
 interface NavItem {
@@ -46,6 +47,18 @@ const navItems: NavItem[] = [
     label: "Customers",
     icon: <Users className="w-5 h-5" />,
     href: "/dashboard/customers",
+  },
+  {
+    id: "vehicles",
+    label: "Vehicles",
+    icon: <Car className="w-5 h-5" />,
+    href: "/dashboard/vehicles",
+  },
+  {
+    id: "service-logs",
+    label: "Service Logs",
+    icon: <Wrench className="w-5 h-5" />,
+    href: "/dashboard/service-logs",
   },
   {
     id: "reports",

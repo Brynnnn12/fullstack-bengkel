@@ -7,7 +7,7 @@ import {
   updateServiceLog,
   deleteServiceLog,
 } from '../app/controllers/serviceLog.controller';
-import { authenticateToken } from '../app/middlewares/auth/authHandler';
+import { authenticateToken } from '../app/middlewares/auth/auth.middleware';
 import { checkRole } from '../app/middlewares/auth/checkRole';
 
 const router = express.Router();
